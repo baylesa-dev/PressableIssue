@@ -51,7 +51,6 @@ function App(): React.JSX.Element {
           style={styles.list}
           data={fakeUsers}
           renderItem={renderItem}
-          disableScrollViewPanResponder
         />
       </View>
     </GestureHandlerRootView>
