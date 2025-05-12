@@ -1,130 +1,87 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useCallback} from 'react';
+import {ListRenderItemInfo, StyleSheet, Text, View} from 'react-native';
 import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  FlatList,
+  GestureHandlerRootView,
+  Pressable,
+} from 'react-native-gesture-handler';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const fakeUsers = [
+  {id: '1', name: 'John Doe'},
+  {id: '2', name: 'Jane Smith'},
+  {id: '3', name: 'Alice Johnson'},
+  {id: '4', name: 'Bob Brown'},
+  {id: '5', name: 'Charlie Davis'},
+  {id: '6', name: 'Diana Prince'},
+  {id: '7', name: 'Ethan Hunt'},
+  {id: '8', name: 'Felicity Smoak'},
+  {id: '9', name: 'George Clooney'},
+  {id: '10', name: 'Hannah Montana'},
+  {id: '11', name: 'Ian Malcolm'},
+  {id: '12', name: 'Jack Sparrow'},
+  {id: '13', name: 'Katherine Johnson'},
+  {id: '14', name: 'Leonardo DiCaprio'},
+  {id: '15', name: 'Mia Wallace'},
+];
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
+  const renderItem = useCallback(
+    ({item}: ListRenderItemInfo<(typeof fakeUsers)[0]>) => (
+      <Pressable
+        style={styles.listItem}
+        onPress={() => console.log('Item Pressed!')}>
+        <Text>{item.name}</Text>
+      </Pressable>
+    ),
+    [],
+  );
 
   return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+    <GestureHandlerRootView>
+      <View style={styles.container}>
+        <Pressable
+          style={styles.card}
+          onPress={() => console.log('Card Pressed!')}>
+          <View>
+            <Text style={styles.text}>Hello World</Text>
+          </View>
+        </Pressable>
+
+        <FlatList
+          style={styles.list}
+          data={fakeUsers}
+          renderItem={renderItem}
+          disableScrollViewPanResponder
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
   },
-  sectionTitle: {
-    fontSize: 24,
+  list: {
+    flex: 1,
+    flexGrow: 1,
+  },
+  listItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    borderBottomWidth: 1,
+  },
+  card: {
+    flex: 1,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
     fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    color: '#000',
+    textAlign: 'center',
   },
 });
 
